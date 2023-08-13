@@ -1,12 +1,8 @@
 import mongoose from 'mongoose';
 import {
-  MONGODB_DATABASE,
-  MONGODB_HOST,
-  MONGODB_PASS,
-  MONGODB_USER,
+  MONGODB_URI
 } from '../../shared/constants/database.constants';
 
-const connectionString = `mongodb+srv://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_HOST}/${MONGODB_DATABASE}`;
 
 const options: mongoose.ConnectOptions = {
   keepAlive: true,
@@ -16,7 +12,7 @@ mongoose.set('strictQuery', true);
 
 export const database = () =>
   mongoose
-    .connect(connectionString, options)
+    .connect(MONGODB_URI, options)
     .then((connection) => {
       process.stdout.write('MongoDB Connected!\n');
       return connection;

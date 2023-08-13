@@ -1,6 +1,7 @@
 node_modules
 node_modules
 .vercel
+.env
 .bin
 bin
 yarn-error.log

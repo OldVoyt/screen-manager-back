@@ -11,7 +11,6 @@
     "pre-prod": "rimraf dist && npm run build",
     "dev": "nodemon --watch src --exec ts-node src/server.ts",
     "predev": "npm run build",
-    "prepare:enviroment": "node scripts/dev-enviroment.cjs",
     "format": "prettier --write \"src/**/*.(js|ts)\"",
     "lint": "eslint src --ext .js,.ts",
     "lint:fix": "eslint src --fix --ext .js,.ts",
@@ -42,6 +41,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "google-auth-library": "^9.0.0",
     "helmet": "^5.1.1",
     "mongoose": "^6.11.3",
     "morgan": "^1.10.0",
@@ -61,7 +61,7 @@
     "nodemon": "2.0.19",
     "prettier": "^2.8.1",
     "ts-node-dev": "1.1.8",
-    "typescript": "4.5.5"
+    "typescript": "^5.1.6"
   },
   "repository": {
     "type": "git",
