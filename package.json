@@ -18,7 +18,8 @@
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "start": "node dist/server.js"
   },
   "engines": {
     "node": ">=16.18",
@@ -61,7 +62,8 @@
     "nodemon": "2.0.19",
     "prettier": "^2.8.1",
     "ts-node-dev": "1.1.8",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "zod": "^3.21.4"
   },
   "repository": {
     "type": "git",
