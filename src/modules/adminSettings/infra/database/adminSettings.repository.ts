@@ -20,7 +20,7 @@ export class AdminSettingsRepository {
     return adminSettings;
   }
 
-  public async findOne(id: string) {
+  public async findOne(id: string): Promise<AdminSettingsModel | null> {
     const adminSettings = await adminSettingsModel.findOne({
       Id: id,
     });
@@ -44,6 +44,6 @@ export class AdminSettingsRepository {
         HttpStatus.BAD_REQUEST
       );
     }
-    return adminSettings;
+    return adminSettings.toObject<AdminSettingsModel>();
   }
 }

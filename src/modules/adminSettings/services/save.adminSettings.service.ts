@@ -1,10 +1,12 @@
 import { AdminSettingsModel } from '../../../shared/model/AdminSettings';
 import {
   adminSettingsRepositoryInstance,
-  cachedPlaylistRepositoryInstance,
   workspaceInfoRepositoryInstance,
 } from '../infra/database/repositories';
-import { populateCachedPlaylists } from './populateCahcedPlaylist';
+import {
+  populateCachedPlaylists,
+  removeCachedPlaylists,
+} from './populateCahcedPlaylist';
 
 type TaskFunction = () => Promise<void>;
 
@@ -48,7 +50,9 @@ export class SaveAdminSettingsService {
     if (!existingWorkspaceInfo) {
       throw new Error('No workspace associated with the user');
     }
-
+    const existingSettings = await adminSettingsRepositoryInstance.findOne(
+      existingWorkspaceInfo.AdminSettingsId
+    );
     if (adminSettings.Id !== existingWorkspaceInfo.AdminSettingsId) {
       adminSettings.Id = existingWorkspaceInfo.AdminSettingsId;
     }
@@ -56,12 +60,30 @@ export class SaveAdminSettingsService {
     const savedSettings = await adminSettingsRepositoryInstance.update(
       adminSettings
     );
+
+    if (
+      existingSettings?.ScreenModel?.Screens &&
+      adminSettings?.ScreenModel?.Screens
+    ) {
+      for (const screen of existingSettings.ScreenModel.Screens) {
+        const screenToSave = adminSettings.ScreenModel.Screens.find(
+          (screenSaved) => screen.ConnectionId === screenSaved.ConnectionId
+        );
+        if (!screenToSave) {
+          taskQueue.enqueue(() =>
+            removeCachedPlaylists(screen.ConnectionId).catch((reason) =>
+              console.error('Error during screen deleting', reason)
+            )
+          );
+        }
+      }
+    }
     taskQueue.enqueue(() =>
-      populateCachedPlaylists(savedSettings).catch((reason) =>
+      populateCachedPlaylists(adminSettings).catch((reason) =>
         console.error('Error during populating Cached Playlists', reason)
       )
     );
 
-    return savedSettings;
+    return adminSettings;
   }
 }
