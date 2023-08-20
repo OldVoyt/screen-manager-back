@@ -4,6 +4,6 @@ import { cachedPlaylistControllerInstance } from '../controllers';
 
 const CachedPlaylistRouter = Router();
 
-CachedPlaylistRouter.get('/', cachedPlaylistControllerInstance.get);
+CachedPlaylistRouter.get('/:id', cachedPlaylistControllerInstance.get);
 
 export default CachedPlaylistRouter;
